@@ -1,10 +1,11 @@
 import { SafeAreaView } from 'react-native';
-import StudentLogin from './Pages/Auth/StudentLogin';
+import StudentRegister from './Pages/Auth/StudentRegister';
 
 export default function App() {
   return (
     <SafeAreaView>
-      <StudentLogin></StudentLogin>
+      <StudentRegister></StudentRegister>
+      {/* <StudentLogin></StudentLogin> */}
     </SafeAreaView>
   );
 }

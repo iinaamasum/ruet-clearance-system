@@ -6,7 +6,7 @@ import tw from 'twrnc';
 import Student from '../../assets/image/studentLogin.png';
 import auth from '../../firebase.init';
 
-export default function StudentLogin() {
+const StudentRegister = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   const {
@@ -14,6 +14,8 @@ export default function StudentLogin() {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
+    getValues,
   } = useForm({
     defaultValues: {
       email: '',
@@ -36,7 +38,7 @@ export default function StudentLogin() {
         <Image source={Student} style={tw`w-24 h-32 mx-auto`} />
       </View>
       <Text style={tw`text-xl text-center mb-5 font-bold text-red-600`}>
-        Student Login
+        Student SignUp
       </Text>
 
       <View style={tw`mb-3`}>
@@ -111,8 +113,46 @@ export default function StudentLogin() {
           </Text>
         )}
       </View>
+      <View style={tw`mb-3`}>
+        <Text
+          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 16 }]}
+        >
+          Confirm Password
+        </Text>
+        <Controller
+          control={control}
+          rules={{
+            required: {
+              value: true,
+              message: 'Confirm password is required',
+            },
+            validate: (val) => {
+              if (watch('password') != val) {
+                return 'Your passwords do no match';
+              }
+            },
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              style={tw`rounded-lg bg-gray-100 w-full px-4 py-3`}
+              placeholder="Enter Password"
+            />
+          )}
+          name="confirmPassword"
+        />
+        {errors.confirmPassword && (
+          <Text style={tw`text-sm font-bold text-red-600`}>
+            {errors.confirmPassword?.message}
+          </Text>
+        )}
+      </View>
 
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
     </View>
   );
-}
+};
+
+export default StudentRegister;
