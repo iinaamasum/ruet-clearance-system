@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Image, Text, TextInput, View } from 'react-native';
 import tw from 'twrnc';
@@ -7,8 +7,8 @@ import Student from '../../assets/image/studentLogin.png';
 import auth from '../../firebase.init';
 
 const StudentRegister = () => {
-  const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
   const {
     control,
     handleSubmit,
@@ -23,7 +23,7 @@ const StudentRegister = () => {
     },
   });
   const onSubmit = (data) => {
-    signInWithEmailAndPassword(data.email, data.password);
+    createUserWithEmailAndPassword(data.email, data.password);
     reset();
   };
   if (loading) {
