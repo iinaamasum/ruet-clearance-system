@@ -6,9 +6,10 @@ import tw from 'twrnc';
 import Student from '../../assets/image/studentLogin.png';
 import auth from '../../firebase.init';
 
-export default function StudentLogin() {
+export default function StudentLogin({ navigation }) {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
+  const { navigate } = navigation;
   const {
     control,
     handleSubmit,
@@ -23,6 +24,7 @@ export default function StudentLogin() {
   const onSubmit = (data) => {
     signInWithEmailAndPassword(data.email, data.password);
     reset();
+    navigate('StudentHome');
   };
   if (loading) {
     return <Text>Loading</Text>;
@@ -111,6 +113,16 @@ export default function StudentLogin() {
           </Text>
         )}
       </View>
+
+      <Text>
+        Don't have an account?{' '}
+        <Text
+          style={tw`text-blue-600 underline`}
+          onPress={() => navigate('StudentHome')}
+        >
+          Create Account
+        </Text>
+      </Text>
 
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
     </View>
