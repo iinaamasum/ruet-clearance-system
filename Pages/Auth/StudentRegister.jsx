@@ -1,7 +1,11 @@
-import React from 'react';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import React, { useEffect } from 'react';
+import {
+  useAuthState,
+  useCreateUserWithEmailAndPassword,
+} from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { Image, Text, TextInput, TouchableHighlight, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import tw from 'twrnc';
 import registerImg from '../../assets/image/StudentSignup.png';
 import auth from '../../firebase.init';
@@ -9,8 +13,9 @@ import LoadingComponent from '../Shared/LoadingComponent';
 
 const StudentRegister = ({ navigation }) => {
   const { navigate } = navigation;
-  const [createUserWithEmailAndPassword, user, loading, error] =
+  const [createUserWithEmailAndPassword, formUser, formLoading, formError] =
     useCreateUserWithEmailAndPassword(auth);
+  const [user] = useAuthState(auth);
   const {
     control,
     handleSubmit,
@@ -24,15 +29,26 @@ const StudentRegister = ({ navigation }) => {
       password: '',
     },
   });
-  const onSubmit = (data) => {
-    createUserWithEmailAndPassword(data.email, data.password);
-    navigate('Student Home');
-    reset();
+  const onSubmit = async (data) => {
+    await createUserWithEmailAndPassword(data.email, data.password);
+    Toast.show({
+      type: 'success',
+      text1: 'Account Created Successfully',
+      text2: `Congratulations ${data.email}👋`,
+    });
   };
-  if (loading) {
+
+  useEffect(() => {
+    if (user) {
+      reset();
+      navigate('Student Home');
+    }
+  }, [user]);
+
+  if (formLoading) {
     return <LoadingComponent />;
   }
-  if (error) {
+  if (formError) {
     alert(error.message);
   }
   return (

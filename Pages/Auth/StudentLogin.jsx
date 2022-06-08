@@ -1,5 +1,8 @@
-import React from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import React, { useEffect } from 'react';
+import {
+  useAuthState,
+  useSignInWithEmailAndPassword,
+} from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { Image, Text, TextInput, TouchableHighlight, View } from 'react-native';
 import Toast from 'react-native-toast-message';
@@ -9,9 +12,10 @@ import auth from '../../firebase.init';
 import LoadingComponent from '../Shared/LoadingComponent';
 
 export default function StudentLogin({ navigation }) {
-  const [signInWithEmailAndPassword, user, loading, error] =
+  const [signInWithEmailAndPassword, formUser, formLoading, formError] =
     useSignInWithEmailAndPassword(auth);
   const { navigate } = navigation;
+  const [user] = useAuthState(auth);
   const {
     control,
     handleSubmit,
@@ -23,24 +27,31 @@ export default function StudentLogin({ navigation }) {
       password: '',
     },
   });
-  const onSubmit = (data) => {
-    signInWithEmailAndPassword(data.email, data.password);
-    reset();
-
+  const onSubmit = async (data) => {
+    await signInWithEmailAndPassword(data.email, data.password);
     Toast.show({
       type: 'success',
       text1: 'Login Successful',
       text2: 'Congratulations 👋',
     });
-
-    navigate('Student Home');
   };
-  if (loading) {
+
+  useEffect(() => {
+    if (user) {
+      reset();
+      navigate('Student Home');
+    }
+  }, [user]);
+
+  if (formLoading) {
     return <LoadingComponent />;
   }
-  if (error) {
+  if (formError) {
     alert(error.message);
   }
+
+  console.log(user);
+
   return (
     <View style={tw`flex justify-center h-full px-8`}>
       <View style={tw`w-full mx-auto`}>
