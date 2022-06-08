@@ -2,6 +2,7 @@ import React from 'react';
 import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { Image, Text, TextInput, TouchableHighlight, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import tw from 'twrnc';
 import ForgotPass from '../../assets/image/forgotPass.png';
 import auth from '../../firebase.init';
@@ -27,11 +28,20 @@ const ResetPassword = ({ navigation }) => {
   }
 
   if (error) {
-    alert(error.message);
+    Toast.show({
+      type: 'error',
+      text1: 'Error Occured',
+      text2: `${error.message}`,
+    });
   }
 
   const onSubmit = (data) => {
     sendPasswordResetEmail(data.email);
+    Toast.show({
+      type: 'success',
+      text1: 'Password Reset',
+      text2: 'Reset link sent to your email. Please check spam box also.',
+    });
     reset();
   };
   return (
@@ -95,7 +105,7 @@ const ResetPassword = ({ navigation }) => {
           style={tw`text-center text-white text-xl tracking-wide font-bold`}
           onPress={handleSubmit(onSubmit)}
         >
-          Register
+          Reset Password
         </Text>
       </TouchableHighlight>
     </View>

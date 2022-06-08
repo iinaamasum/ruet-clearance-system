@@ -2,6 +2,7 @@ import React from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { Image, Text, TextInput, TouchableHighlight, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import tw from 'twrnc';
 import loginImg from '../../assets/image/studentLogin.png';
 import auth from '../../firebase.init';
@@ -25,6 +26,13 @@ export default function StudentLogin({ navigation }) {
   const onSubmit = (data) => {
     signInWithEmailAndPassword(data.email, data.password);
     reset();
+
+    Toast.show({
+      type: 'success',
+      text1: 'Login Successful',
+      text2: 'Congratulations 👋',
+    });
+
     navigate('Student Home');
   };
   if (loading) {

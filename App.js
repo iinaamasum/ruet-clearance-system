@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Toast from 'react-native-toast-message';
 import ResetPassword from './Pages/Auth/ResetPassword';
 import StudentLogin from './Pages/Auth/StudentLogin';
 import StudentRegister from './Pages/Auth/StudentRegister';
@@ -15,6 +16,7 @@ export default function App() {
         <Stack.Screen name="Student Home" component={StudentHome} />
         <Stack.Screen name="Reset Password" component={ResetPassword} />
       </Stack.Navigator>
+      <Toast />
     </NavigationContainer>
   );
 }
