@@ -45,11 +45,26 @@ const StudentRegister = ({ navigation }) => {
     }
   }, [user]);
 
+  if (loading) {
+    return <LoadingComponent />;
+  }
+  if (error) {
+    Toast.show({
+      type: 'success',
+      text1: 'Error Ocurred',
+      text2: `${error?.message}`,
+    });
+  }
+
   if (formLoading) {
     return <LoadingComponent />;
   }
   if (formError) {
-    alert(error.message);
+    Toast.show({
+      type: 'error',
+      text1: 'Error Ocurred',
+      text2: `${formError?.message}`,
+    });
   }
   return (
     <View style={tw`flex justify-center h-full px-8`}>

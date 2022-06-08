@@ -15,7 +15,7 @@ export default function StudentLogin({ navigation }) {
   const [signInWithEmailAndPassword, formUser, formLoading, formError] =
     useSignInWithEmailAndPassword(auth);
   const { navigate } = navigation;
-  const [user] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
   const {
     control,
     handleSubmit,
@@ -39,18 +39,31 @@ export default function StudentLogin({ navigation }) {
   useEffect(() => {
     if (user) {
       reset();
-      navigate('Student Home');
+      navigate('Update Profile');
     }
   }, [user]);
+
+  if (loading) {
+    return <LoadingComponent />;
+  }
+  if (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error Ocurred',
+      text2: `${error?.message}`,
+    });
+  }
 
   if (formLoading) {
     return <LoadingComponent />;
   }
   if (formError) {
-    alert(error.message);
+    Toast.show({
+      type: 'error',
+      text1: 'Error Ocurred',
+      text2: `${formError?.message}`,
+    });
   }
-
-  console.log(user);
 
   return (
     <View style={tw`flex justify-center h-full px-8`}>
@@ -109,11 +122,6 @@ export default function StudentLogin({ navigation }) {
             required: {
               value: true,
               message: 'Password is required',
-            },
-            pattern: {
-              value: /(?=.*[!#$%&?^*@~() "])(?=.{8,})/,
-              message:
-                'Password must contain at least 8 characters including one special character',
             },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
