@@ -1,12 +1,13 @@
 import React from 'react';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, Image, Text, TextInput, View } from 'react-native';
+import { Image, Text, TextInput, TouchableHighlight, View } from 'react-native';
 import tw from 'twrnc';
 import Student from '../../assets/image/studentLogin.png';
 import auth from '../../firebase.init';
 
-const StudentRegister = () => {
+const StudentRegister = ({ navigation }) => {
+  const { navigate } = navigation;
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
   const {
@@ -43,7 +44,7 @@ const StudentRegister = () => {
 
       <View style={tw`mb-3`}>
         <Text
-          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 16 }]}
+          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 18 }]}
         >
           Email
         </Text>
@@ -61,7 +62,7 @@ const StudentRegister = () => {
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              style={tw`rounded-lg bg-gray-100 w-full px-4 py-3`}
+              style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -79,7 +80,7 @@ const StudentRegister = () => {
 
       <View style={tw`mb-3`}>
         <Text
-          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 16 }]}
+          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 18 }]}
         >
           Password
         </Text>
@@ -101,7 +102,7 @@ const StudentRegister = () => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              style={tw`rounded-lg bg-gray-100 w-full px-4 py-3`}
+              style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
               placeholder="Enter Password"
             />
           )}
@@ -115,7 +116,7 @@ const StudentRegister = () => {
       </View>
       <View style={tw`mb-3`}>
         <Text
-          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 16 }]}
+          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 18 }]}
         >
           Confirm Password
         </Text>
@@ -137,7 +138,7 @@ const StudentRegister = () => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              style={tw`rounded-lg bg-gray-100 w-full px-4 py-3`}
+              style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
               placeholder="Enter Password"
             />
           )}
@@ -150,7 +151,26 @@ const StudentRegister = () => {
         )}
       </View>
 
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Text style={tw`text-[4] mb-3 ml-1`}>
+        Already have an account?{' '}
+        <Text
+          onPress={() => navigate('Login')}
+          style={tw`text-blue-600 underline`}
+        >
+          Login Now
+        </Text>
+      </Text>
+
+      <TouchableHighlight
+        style={tw`rounded-lg bg-slate-700 font-bold py-2 px-4`}
+      >
+        <Text
+          style={tw`text-center text-white text-xl tracking-wide font-bold`}
+          onPress={handleSubmit(onSubmit)}
+        >
+          Register
+        </Text>
+      </TouchableHighlight>
     </View>
   );
 };

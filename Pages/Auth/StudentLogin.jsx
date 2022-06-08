@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, Image, Text, TextInput, View } from 'react-native';
+import { Image, Text, TextInput, TouchableHighlight, View } from 'react-native';
 import tw from 'twrnc';
 import Student from '../../assets/image/studentLogin.png';
 import auth from '../../firebase.init';
@@ -24,7 +24,7 @@ export default function StudentLogin({ navigation }) {
   const onSubmit = (data) => {
     signInWithEmailAndPassword(data.email, data.password);
     reset();
-    navigate('StudentHome');
+    navigate('Student Home');
   };
   if (loading) {
     return <Text>Loading</Text>;
@@ -43,7 +43,7 @@ export default function StudentLogin({ navigation }) {
 
       <View style={tw`mb-3`}>
         <Text
-          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 16 }]}
+          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 18 }]}
         >
           Email
         </Text>
@@ -61,7 +61,7 @@ export default function StudentLogin({ navigation }) {
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              style={tw`rounded-lg bg-gray-100 w-full px-4 py-3`}
+              style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -79,7 +79,7 @@ export default function StudentLogin({ navigation }) {
 
       <View style={tw`mb-3`}>
         <Text
-          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 16 }]}
+          style={[tw`font-semibold text-purple-600 ml-1`, { fontSize: 18 }]}
         >
           Password
         </Text>
@@ -101,7 +101,7 @@ export default function StudentLogin({ navigation }) {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              style={tw`rounded-lg bg-gray-100 w-full px-4 py-3`}
+              style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
               placeholder="Enter Password"
             />
           )}
@@ -114,17 +114,35 @@ export default function StudentLogin({ navigation }) {
         )}
       </View>
 
-      <Text>
+      <Text style={tw`text-[4] ml-1`}>
         Don't have an account?{' '}
         <Text
           style={tw`text-blue-600 underline`}
-          onPress={() => navigate('StudentHome')}
+          onPress={() => navigate('Register')}
         >
           Create Account
         </Text>
       </Text>
+      <Text style={tw`text-[4] mb-3 ml-1`}>
+        Forgot password?{' '}
+        <Text
+          style={tw`text-blue-600 underline`}
+          onPress={() => navigate('Reset Password')}
+        >
+          Reset Now
+        </Text>
+      </Text>
 
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <TouchableHighlight
+        style={tw`rounded-lg bg-slate-700 font-bold py-2 px-4`}
+      >
+        <Text
+          style={tw`text-center text-white text-xl tracking-wide font-bold`}
+          onPress={handleSubmit(onSubmit)}
+        >
+          Login
+        </Text>
+      </TouchableHighlight>
     </View>
   );
 }
