@@ -3,11 +3,12 @@ import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { Image, Text, TextInput, TouchableHighlight, View } from 'react-native';
 import tw from 'twrnc';
-import Student from '../../assets/image/studentLogin.png';
+import ForgotPass from '../../assets/image/forgotPass.png';
 import auth from '../../firebase.init';
 import LoadingComponent from '../Shared/LoadingComponent';
 
-const ResetPassword = () => {
+const ResetPassword = ({ navigation }) => {
+  const { navigate } = navigation;
   const [sendPasswordResetEmail, sending, error] =
     useSendPasswordResetEmail(auth);
   const {
@@ -36,7 +37,7 @@ const ResetPassword = () => {
   return (
     <View style={tw`flex justify-center h-full px-8`}>
       <View style={tw`w-full mx-auto`}>
-        <Image source={Student} style={tw`w-24 h-32 mx-auto`} />
+        <Image source={ForgotPass} style={tw`w-52 h-52 mx-auto`} />
       </View>
       <Text style={tw`text-xl text-center mb-5 font-bold text-red-600`}>
         Reset Password
@@ -76,6 +77,17 @@ const ResetPassword = () => {
           </Text>
         )}
       </View>
+
+      <Text style={tw`mb-3 text-[4] ml-1`}>
+        Already reset password via email?{' '}
+        <Text
+          onPress={() => navigate('Login')}
+          style={tw`text-blue-600 underline ml-1`}
+        >
+          Log In
+        </Text>
+      </Text>
+
       <TouchableHighlight
         style={tw`rounded-lg bg-slate-700 font-bold py-2 px-4`}
       >

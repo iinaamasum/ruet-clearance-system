@@ -3,8 +3,9 @@ import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { Image, Text, TextInput, TouchableHighlight, View } from 'react-native';
 import tw from 'twrnc';
-import Student from '../../assets/image/studentLogin.png';
+import registerImg from '../../assets/image/StudentSignup.png';
 import auth from '../../firebase.init';
+import LoadingComponent from '../Shared/LoadingComponent';
 
 const StudentRegister = ({ navigation }) => {
   const { navigate } = navigation;
@@ -25,21 +26,22 @@ const StudentRegister = ({ navigation }) => {
   });
   const onSubmit = (data) => {
     createUserWithEmailAndPassword(data.email, data.password);
+    navigate('Student Home');
     reset();
   };
   if (loading) {
-    return <Text>Loading</Text>;
+    return <LoadingComponent />;
   }
   if (error) {
-    return alert(error.message);
+    alert(error.message);
   }
   return (
     <View style={tw`flex justify-center h-full px-8`}>
       <View style={tw`w-full mx-auto`}>
-        <Image source={Student} style={tw`w-24 h-32 mx-auto`} />
+        <Image source={registerImg} style={tw`w-32 h-32 mx-auto`} />
       </View>
       <Text style={tw`text-xl text-center mb-5 font-bold text-red-600`}>
-        Student SignUp
+        Create Account
       </Text>
 
       <View style={tw`mb-3`}>
