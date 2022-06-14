@@ -51,7 +51,7 @@ const StudentUpdateProfile = () => {
     defaultValues: {
       full_name: '',
       roll: '',
-      dept: '',
+      series: '',
       contact_number: '',
     },
   });
@@ -63,9 +63,9 @@ const StudentUpdateProfile = () => {
     // navigate('Student Home');
   };
   return (
-    <ScrollView style={tw`px-5`}>
+    <ScrollView style={tw`px-5 mt-6`}>
       <KeyboardAvoidingView behavior="padding">
-        <Text style={tw`text-center text-green-500 text-xl my-4`}>
+        <Text style={tw`text-center font-bold text-green-500 text-2xl my-4`}>
           Please, Update Your Profile
         </Text>
         <View style={tw`mb-3`}>
@@ -182,6 +182,46 @@ const StudentUpdateProfile = () => {
               { fontSize: 18 },
             ]}
           >
+            Series
+          </Text>
+          <Controller
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: 'Series is required',
+              },
+              pattern: {
+                value: /^[0-9]{2}$/,
+                message: 'Invalid Series Format',
+              },
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Enter Series. Ex: 19"
+                keyboardType="numeric"
+              />
+            )}
+            name="series"
+          />
+          {errors.series && (
+            <Text style={tw`text-sm font-bold text-red-600`}>
+              {errors.series?.message}
+            </Text>
+          )}
+        </View>
+
+        <View style={tw`mb-3`}>
+          <Text
+            style={[
+              tw`font-semibold text-purple-600 ml-1 mb-1`,
+              { fontSize: 18 },
+            ]}
+          >
             Roll
           </Text>
           <Controller
@@ -214,6 +254,7 @@ const StudentUpdateProfile = () => {
             </Text>
           )}
         </View>
+
         <View style={tw`mb-3`}>
           <Text
             style={[
@@ -255,13 +296,13 @@ const StudentUpdateProfile = () => {
         </View>
 
         <TouchableHighlight
-          style={tw`rounded-lg bg-slate-700 font-bold py-2 px-4`}
+          style={tw`rounded-lg bg-slate-700 font-bold py-2 px-4 mt-3`}
         >
           <Text
             style={tw`text-center text-white text-xl tracking-wide font-bold`}
             onPress={handleSubmit(onSubmit)}
           >
-            Login
+            Update Profile Now
           </Text>
         </TouchableHighlight>
       </KeyboardAvoidingView>
