@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   useAuthState,
   useSignInWithEmailAndPassword,
@@ -37,11 +37,11 @@ export default function StudentLogin({ navigation }) {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user || formUser) {
       reset();
       navigate('Update Profile');
     }
-  }, [user]);
+  }, [user, formUser]);
 
   if (loading) {
     return <LoadingComponent />;

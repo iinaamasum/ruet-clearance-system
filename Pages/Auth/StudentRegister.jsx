@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   useAuthState,
   useCreateUserWithEmailAndPassword,
@@ -15,7 +15,7 @@ const StudentRegister = ({ navigation }) => {
   const { navigate } = navigation;
   const [createUserWithEmailAndPassword, formUser, formLoading, formError] =
     useCreateUserWithEmailAndPassword(auth);
-  const [user] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
   const {
     control,
     handleSubmit,
@@ -39,11 +39,11 @@ const StudentRegister = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user || formUser) {
       reset();
-      navigate('Student Home');
+      navigate('Update Profile');
     }
-  }, [user]);
+  }, [user, formUser]);
 
   if (loading) {
     return <LoadingComponent />;
