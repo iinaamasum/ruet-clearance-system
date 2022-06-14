@@ -1,8 +1,47 @@
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Text, TextInput, TouchableHighlight, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  View,
+} from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import tw from 'twrnc';
 
 const StudentUpdateProfile = () => {
+  const [deptOpen, setDeptOpen] = useState(false);
+  const [deptValue, setDeptValue] = useState(null);
+
+  const [facultyOpen, setFacultyOpen] = useState(false);
+  const [facultyValue, setFacultyValue] = useState('electrical');
+  const [faculty, setFaculty] = useState([
+    { label: 'Electrical & Computer Engineering', value: 'electrical' },
+    { label: 'Civil Engineering', value: 'civil' },
+    { label: 'Mechanical Engineering', value: 'mechanical' },
+  ]);
+  const [ECEDept, setECEDept] = useState([
+    { label: 'CSE', value: 'cse' },
+    { label: 'EEE', value: 'eee' },
+    { label: 'ETE', value: 'ete' },
+    { label: 'ECE', value: 'ece' },
+  ]);
+  const [CEDept, setCEDept] = useState([
+    { label: 'CE', value: 'ce' },
+    { label: 'Arch', value: 'arch' },
+    { label: 'URP', value: 'urp' },
+    { label: 'BECM', value: 'becm' },
+  ]);
+  const [MEDept, setMEDept] = useState([
+    { label: 'ME', value: 'me' },
+    { label: 'GCE', value: 'gce' },
+    { label: 'MTE', value: 'mte' },
+    { label: 'MSE', value: 'mse' },
+    { label: 'IPE', value: 'ipe' },
+    { label: 'CFPE', value: 'cfpe' },
+  ]);
   const {
     control,
     handleSubmit,
@@ -13,140 +52,220 @@ const StudentUpdateProfile = () => {
       full_name: '',
       roll: '',
       dept: '',
-      series: '',
       contact_number: '',
     },
   });
+  // console.log(facultyValue);
   const onSubmit = (data) => {
     console.log(data);
-    navigate('Student Home');
+    console.log(facultyValue);
+    console.log(deptValue);
+    // navigate('Student Home');
   };
   return (
-    <View style={tw`px-5`}>
-      <Text style={tw`text-center text-green-500 text-xl my-4`}>
-        Please, Update Your Profile
-      </Text>
-      <View style={tw`mb-3`}>
-        <Text
-          style={[
-            tw`font-semibold text-purple-600 ml-1 mb-1`,
-            { fontSize: 18 },
-          ]}
-        >
-          Full Name
+    <ScrollView style={tw`px-5`}>
+      <KeyboardAvoidingView behavior="padding">
+        <Text style={tw`text-center text-green-500 text-xl my-4`}>
+          Please, Update Your Profile
         </Text>
-        <Controller
-          control={control}
-          rules={{
-            required: {
-              value: true,
-              message: 'Name is required',
-            },
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              placeholder="Enter Your Full Name"
-            />
-          )}
-          name="full_name"
-        />
-        {errors.full_name && (
-          <Text style={tw`text-sm font-bold text-red-600`}>
-            {errors.full_name?.message}
+        <View style={tw`mb-3`}>
+          <Text
+            style={[
+              tw`font-semibold text-purple-600 ml-1 mb-1`,
+              { fontSize: 18 },
+            ]}
+          >
+            Full Name
           </Text>
-        )}
-      </View>
-
-      <View style={tw`mb-3`}>
-        <Text
-          style={[
-            tw`font-semibold text-purple-600 ml-1 mb-1`,
-            { fontSize: 18 },
-          ]}
-        >
-          Series
-        </Text>
-        <Controller
-          control={control}
-          rules={{
-            required: {
-              value: true,
-              message: 'Series is required',
-            },
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              placeholder="Enter Your Series"
-            />
+          <Controller
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: 'Name is required',
+              },
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Enter Your Full Name"
+              />
+            )}
+            name="full_name"
+          />
+          {errors.full_name && (
+            <Text style={tw`text-sm font-bold text-red-600`}>
+              {errors.full_name?.message}
+            </Text>
           )}
-          name="series"
-        />
-        {errors.series && (
-          <Text style={tw`text-sm font-bold text-red-600`}>
-            {errors.series?.message}
-          </Text>
-        )}
-      </View>
+        </View>
 
-      <View style={tw`mb-3`}>
-        <Text
-          style={[
-            tw`font-semibold text-purple-600 ml-1 mb-1`,
-            { fontSize: 18 },
-          ]}
-        >
-          Roll
-        </Text>
-        <Controller
-          control={control}
-          rules={{
-            required: {
-              value: true,
-              message: 'Roll is required',
-            },
-            pattern: {
-              value: /^[0-9]{7}$/,
-              message: 'Invalid Roll',
-            },
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              placeholder="Enter Your Full Name"
-              keyboardType="numeric"
-            />
+        <View style={[tw`mb-3 z-50`]}>
+          <Text
+            style={[
+              tw`font-semibold text-purple-600 ml-1 mb-1`,
+              { fontSize: 18 },
+            ]}
+          >
+            Faculty
+          </Text>
+          <DropDownPicker
+            open={facultyOpen}
+            value={facultyValue}
+            items={faculty}
+            setValue={setFacultyValue}
+            setItems={setFaculty}
+            setOpen={setFacultyOpen}
+            style={[tw`bg-gray-200 w-full px-4 py-3 border-0`]}
+            containerStyle={[tw`border-0 bg-gray-200 rounded-lg`]}
+            dropDownContainerStyle={[
+              tw``,
+              {
+                backgroundColor: '#E5E7EB',
+                borderRadius: 10,
+                zIndex: 1,
+                borderWidth: 0,
+              },
+            ]}
+          />
+        </View>
+
+        <View style={[tw`mb-3 z-40`]}>
+          <Text
+            style={[
+              tw`font-semibold text-purple-600 ml-1 mb-1`,
+              { fontSize: 18 },
+            ]}
+          >
+            Department
+          </Text>
+          <DropDownPicker
+            open={deptOpen}
+            value={deptValue}
+            items={
+              facultyValue === 'electrical'
+                ? ECEDept
+                : facultyValue === 'civil'
+                ? CEDept
+                : MEDept
+            }
+            setValue={setDeptValue}
+            setItems={
+              facultyValue === 'electrical'
+                ? setECEDept
+                : facultyValue === 'civil'
+                ? setCEDept
+                : setMEDept
+            }
+            setOpen={setDeptOpen}
+            style={[tw`bg-gray-200 w-full px-4 py-3 border-0`]}
+            containerStyle={[tw`border-0 bg-gray-200 rounded-lg`]}
+            dropDownContainerStyle={[
+              tw``,
+              {
+                backgroundColor: '#E5E7EB',
+                borderRadius: 10,
+                zIndex: 1,
+                borderWidth: 0,
+              },
+            ]}
+          />
+        </View>
+
+        <View style={tw`mb-3`}>
+          <Text
+            style={[
+              tw`font-semibold text-purple-600 ml-1 mb-1`,
+              { fontSize: 18 },
+            ]}
+          >
+            Roll
+          </Text>
+          <Controller
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: 'Roll is required',
+              },
+              pattern: {
+                value: /^[0-9]{7}$/,
+                message: 'Invalid Roll',
+              },
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Enter Your Roll"
+                keyboardType="numeric"
+              />
+            )}
+            name="roll"
+          />
+          {errors.roll && (
+            <Text style={tw`text-sm font-bold text-red-600`}>
+              {errors.roll?.message}
+            </Text>
           )}
-          name="roll"
-        />
-        {errors.roll && (
-          <Text style={tw`text-sm font-bold text-red-600`}>
-            {errors.roll?.message}
+        </View>
+        <View style={tw`mb-3`}>
+          <Text
+            style={[
+              tw`font-semibold text-purple-600 ml-1 mb-1`,
+              { fontSize: 18 },
+            ]}
+          >
+            Contact Number
           </Text>
-        )}
-      </View>
+          <Controller
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: 'Contact is required',
+              },
+              pattern: {
+                value: /^[0-9]{11}$/,
+                message: 'Invalid Contact Number',
+              },
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={tw`rounded-lg bg-gray-200 w-full px-4 py-3`}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                placeholder="Enter Your Contact Number"
+                keyboardType="numeric"
+              />
+            )}
+            name="contact_number"
+          />
+          {errors.contact_number && (
+            <Text style={tw`text-sm font-bold text-red-600`}>
+              {errors.contact_number?.message}
+            </Text>
+          )}
+        </View>
 
-      <TouchableHighlight
-        style={tw`rounded-lg bg-slate-700 font-bold py-2 px-4`}
-      >
-        <Text
-          style={tw`text-center text-white text-xl tracking-wide font-bold`}
-          onPress={handleSubmit(onSubmit)}
+        <TouchableHighlight
+          style={tw`rounded-lg bg-slate-700 font-bold py-2 px-4`}
         >
-          Login
-        </Text>
-      </TouchableHighlight>
-    </View>
+          <Text
+            style={tw`text-center text-white text-xl tracking-wide font-bold`}
+            onPress={handleSubmit(onSubmit)}
+          >
+            Login
+          </Text>
+        </TouchableHighlight>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
