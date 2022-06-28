@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
 import {
   SafeAreaView,
@@ -10,8 +11,10 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import Toast from 'react-native-toast-message';
 import tw from 'twrnc';
+import auth from '../../firebase.init';
 
 const StudentUpdateProfile = ({ navigation }) => {
+  const [user] = useAuthState(auth);
   const { navigate } = navigation;
   const [deptOpen, setDeptOpen] = useState(false);
   const [deptValue, setDeptValue] = useState(null);
@@ -63,11 +66,16 @@ const StudentUpdateProfile = ({ navigation }) => {
     console.log(facultyValue);
     console.log(deptValue);
 
-    setStudentInfo({ ...data, faculty: facultyValue, dept: deptValue });
+    setStudentInfo({
+      ...data,
+      faculty: facultyValue,
+      dept: deptValue,
+      email: user.email,
+    });
   };
 
   useEffect(() => {
-    if (studentInfo) {
+    if (studentInfo?.full_name?.length > 0) {
       fetch('http://localhost:5000/studentDetails', {
         method: 'POST',
         body: JSON.stringify(studentInfo),
@@ -76,13 +84,14 @@ const StudentUpdateProfile = ({ navigation }) => {
         },
       })
         .then((res) => res.json())
-        .then((data) => console.log(data));
-      Toast.show({
-        type: 'success',
-        text1: 'Info Updated',
-        text2: 'Congratulations 👋',
-      });
-      navigate('Student Home');
+        .then((data) => {
+          Toast.show({
+            type: 'success',
+            text1: 'Info Updated',
+            text2: 'Congratulations 👋',
+          });
+          navigate('Student Home');
+        });
     }
   }, [studentInfo]);
 
