@@ -14,11 +14,15 @@ export default function App() {
       <Stack.Navigator initialRouteName="login">
         <Stack.Screen name="Login" component={StudentLogin} />
         <Stack.Screen name="Register" component={StudentRegister} />
-        <Stack.Screen name="Student Home" component={StudentHome} />
+        <Stack.Screen
+          name="Student Home"
+          component={StudentHome}
+        ></Stack.Screen>
         <Stack.Screen name="Reset Password" component={ResetPassword} />
         <Stack.Screen name="Update Profile" component={StudentUpdateProfile} />
       </Stack.Navigator>
       <Toast />
+      {/* <BottomTabs /> */}
     </NavigationContainer>
   );
 }
