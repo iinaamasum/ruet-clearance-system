@@ -5,6 +5,10 @@ import ResetPassword from './Pages/Auth/ResetPassword';
 import StudentLogin from './Pages/Auth/StudentLogin';
 import StudentRegister from './Pages/Auth/StudentRegister';
 import StudentUpdateProfile from './Pages/Dashboard/StudentUpdateProfile';
+import AccountsClearace from './Pages/Home/AccountsClearace';
+import DeptClearanceSelection from './Pages/Home/DeptClearanceSelection';
+import HallClearanceSelection from './Pages/Home/HallClearanceSelection';
+import OtherClearance from './Pages/Home/OtherClearance';
 import StudentHome from './Pages/Home/StudentHome';
 
 export default function App() {
@@ -17,6 +21,19 @@ export default function App() {
         <Stack.Screen name="Student Home" component={StudentHome} />
         <Stack.Screen name="Reset Password" component={ResetPassword} />
         <Stack.Screen name="Update Profile" component={StudentUpdateProfile} />
+        <Stack.Screen
+          name="Dept Clearance"
+          component={DeptClearanceSelection}
+        />
+        <Stack.Screen
+          name="Hall Clearance"
+          component={HallClearanceSelection}
+        />
+        <Stack.Screen
+          name="Accounts and Admin Clearance"
+          component={AccountsClearace}
+        />
+        <Stack.Screen name="Others" component={OtherClearance} />
       </Stack.Navigator>
       <Toast />
       {/* <BottomTabs /> */}

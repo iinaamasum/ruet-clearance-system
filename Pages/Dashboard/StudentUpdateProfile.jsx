@@ -12,6 +12,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Toast from 'react-native-toast-message';
 import tw from 'twrnc';
 import auth from '../../firebase.init';
+import useStudentInfoFetch from '../Hooks/useStudentInfoFetch';
 
 const StudentUpdateProfile = ({ navigation }) => {
   const [user] = useAuthState(auth);
@@ -19,6 +20,7 @@ const StudentUpdateProfile = ({ navigation }) => {
   const [deptOpen, setDeptOpen] = useState(false);
   const [deptValue, setDeptValue] = useState(null);
   const [studentInfo, setStudentInfo] = useState({});
+  const [info] = useStudentInfoFetch(user.email);
 
   const [facultyOpen, setFacultyOpen] = useState(false);
   const [facultyValue, setFacultyValue] = useState(null);
@@ -73,6 +75,12 @@ const StudentUpdateProfile = ({ navigation }) => {
       email: user.email,
     });
   };
+
+  useEffect(() => {
+    if (info.email) {
+      navigate('Student Home');
+    }
+  }, [info]);
 
   useEffect(() => {
     if (studentInfo?.full_name?.length > 0) {
