@@ -18,7 +18,7 @@ const DeptClearanceSelection = ({ navigation }) => {
   const { navigate } = navigation;
   const [info, setInfo] = useStudentInfoFetch(user.email);
 
-  console.log(info);
+  // console.log(info);
   const {
     control,
     handleSubmit,
@@ -27,13 +27,13 @@ const DeptClearanceSelection = ({ navigation }) => {
   } = useForm({
     defaultValues: {
       due: 0,
-      trx_id: '',
+      trx_id: 'NULL',
     },
   });
 
   const onSubmit = (data) => {
-    console.log(data);
-    if (data.due > 0 && data.trx_id === '') {
+    // console.log(data);
+    if (data.due > 0 && data.trx_id === 'NULL') {
       Toast.show({
         type: 'error',
         text1: 'Provide Transaction ID',
@@ -52,7 +52,7 @@ const DeptClearanceSelection = ({ navigation }) => {
             reset();
             Toast.show({
               type: 'success',
-              text1: 'Applied Successfully',
+              text1: 'Dept Clearance Applied Successfully',
               text2: 'Congratulations 👋',
             });
             navigate('Student Home');
@@ -68,7 +68,7 @@ const DeptClearanceSelection = ({ navigation }) => {
           <Text
             style={tw`text-center font-bold text-purple-600 text-2xl my-1 capitalize`}
           >
-            Departmental clearance form
+            Departmental Clearance Form
           </Text>
           <Text style={tw`text-gray-500 text-center mb-3 px-2`}>
             The application is directly sent to the department head.
@@ -118,7 +118,7 @@ const DeptClearanceSelection = ({ navigation }) => {
                 { fontSize: 18 },
               ]}
             >
-              Total Dues
+              Total Due
             </Text>
             <Controller
               control={control}
@@ -165,7 +165,7 @@ const DeptClearanceSelection = ({ navigation }) => {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
-                  placeholder="Not applicable if dues is '0'"
+                  placeholder="Enter Due Amount"
                   keyboardType="text"
                 />
               )}
@@ -176,7 +176,7 @@ const DeptClearanceSelection = ({ navigation }) => {
             Want to pay dues?{' '}
             <Text
               style={tw`text-blue-600 underline`}
-              onPress={() => navigate('Register')}
+              onPress={() => navigate('Pay')}
             >
               Pay Now
             </Text>
@@ -188,7 +188,7 @@ const DeptClearanceSelection = ({ navigation }) => {
               style={tw`text-center text-white text-xl tracking-wide font-bold`}
               onPress={handleSubmit(onSubmit)}
             >
-              Request for Clearance
+              Request for Dept. Clearance
             </Text>
           </TouchableHighlight>
         </View>

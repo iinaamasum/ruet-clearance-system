@@ -27,7 +27,33 @@ const StudentHome = ({ navigation }) => {
         .then((res) => setDeptCData(res.data));
     }
   }, [navigate, user]);
-  console.log(deptCData);
+  useEffect(() => {
+    if (user.email) {
+      axios
+        .get(
+          `http://localhost:5000/hall-clearance-application?email=${user.email}`
+        )
+        .then((res) => setHallCData(res.data));
+    }
+  }, [navigate, user]);
+  // useEffect(() => {
+  //   if (user.email) {
+  //     axios
+  //       .get(
+  //         `http://localhost:5000/admin-clearance-application?email=${user.email}`
+  //       )
+  //       .then((res) => setAdminCData(res.data));
+  //   }
+  // }, [navigate, user]);
+  // useEffect(() => {
+  //   if (user.email) {
+  //     axios
+  //       .get(
+  //         `http://localhost:5000/others-clearance-application?email=${user.email}`
+  //       )
+  //       .then((res) => setOthersCData(res.data));
+  //   }
+  // }, [navigate, user]);
 
   const handleLogOut = () => {
     signOut(auth);
