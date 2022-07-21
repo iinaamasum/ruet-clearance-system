@@ -1,14 +1,14 @@
 import { signOut } from 'firebase/auth';
-import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Image, Text, TouchableHighlight, View } from 'react-native';
 import tw from 'twrnc';
 import userImg from '../../assets/image/studentLogin.png';
 import auth from '../../firebase.init';
+import useStudentInfoFetch from '../Hooks/useStudentInfoFetch';
 
 const StudentHome = ({ navigation }) => {
   const [user] = useAuthState(auth);
-  const [info, setInfo] = useState({});
+  const [info] = useStudentInfoFetch(user.email);
   if (!user) return <LoadingComponent />;
   const { navigate } = navigation;
 
@@ -20,13 +20,6 @@ const StudentHome = ({ navigation }) => {
     navigate('Login');
   };
 
-  useEffect(() => {
-    if (user.email) {
-      fetch(`http://localhost:5000/studentDetails?email=${user.email}`)
-        .then((res) => res.json())
-        .then((data) => setInfo(data));
-    }
-  }, [user.email]);
   return (
     <View style={tw``}>
       <View style={tw`flex-row items-center justify-between bg-gray-200 px-2`}>
@@ -62,7 +55,7 @@ const StudentHome = ({ navigation }) => {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight
-              style={tw`rounded-lg w-6/12 bg-[#19D3AE] to-[#0FCFEC] font-bold p-2 h-[100px] flex-row items-center justify-center`}
+              style={tw`rounded-lg w-6/12 bg-[#19D3AE] font-bold p-2 h-[100px] flex-row items-center justify-center`}
             >
               <Text
                 style={tw`text-center text-2xl font-semibold text-white`}

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Controller, useForm } from 'react-hook-form';
@@ -82,19 +83,12 @@ const StudentUpdateProfile = ({ navigation }) => {
     }
   }, [info]);
 
-  fetch(`http://localhost:5000/studentDetails?email=${user.email}`)
-    .then((res) => res.json())
-    .then((data) => setInfo(data));
-
   useEffect(() => {
     if (studentInfo?.full_name?.length > 0) {
-      fetch('http://localhost:5000/studentDetails', {
-        method: 'POST',
-        body: JSON.stringify(studentInfo),
-        headers: {
-          'Content-type': 'application/json',
-        },
-      })
+      axios
+        .post('http://localhost:5000/studentDetails', {
+          ...studentInfo,
+        })
         .then((res) => res.json())
         .then((data) => {
           Toast.show({
