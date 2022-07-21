@@ -37,15 +37,16 @@ const StudentHome = ({ navigation }) => {
       </View>
 
       <View>
-        <Text style={tw`text-2xl text-purple-600 mt-4 text-center font-bold`}>
-          Clearance Options
+        <Text style={tw`text-2xl text-purple-600 mt-4 font-bold pl-5`}>
+          Clearance Options :{' '}
+          <Text style={tw`text-black`}>Please Select One</Text>
         </Text>
         <View>
           <View
-            style={tw`flex-row items-center justify-between pl-5 pr-7 pt-6`}
+            style={tw`flex-row items-center justify-between pl-5 pr-7 pt-2`}
           >
             <TouchableHighlight
-              style={tw`rounded-lg w-6/12 bg-[#0FCFEC] font-bold p-2 h-[100px] flex-row items-center justify-center mr-2`}
+              style={tw`rounded-lg w-6/12 bg-[#dddeee] font-bold p-2 h-[100px] flex-row items-center justify-center mr-2`}
             >
               <Text
                 style={tw`text-center text-2xl font-semibold text-slate-700`}
@@ -55,10 +56,10 @@ const StudentHome = ({ navigation }) => {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight
-              style={tw`rounded-lg w-6/12 bg-[#19D3AE] font-bold p-2 h-[100px] flex-row items-center justify-center`}
+              style={tw`rounded-lg w-6/12 bg-[#dddeee] font-bold p-2 h-[100px] flex-row items-center justify-center`}
             >
               <Text
-                style={tw`text-center text-2xl font-semibold text-white`}
+                style={tw`text-center text-2xl font-semibold`}
                 onPress={() => navigate('Hall Clearance')}
               >
                 Hall Clearance
@@ -69,7 +70,7 @@ const StudentHome = ({ navigation }) => {
             style={tw`flex-row items-center justify-between pl-5 pr-7 pt-4 pt-5`}
           >
             <TouchableHighlight
-              style={tw`rounded-lg w-6/12 bg-[#19D3AE] font-bold p-2 h-[100px] flex-row items-center justify-center mr-2`}
+              style={tw`rounded-lg w-6/12 bg-[#dddeee] font-bold p-2 h-[100px] flex-row items-center justify-center mr-2`}
             >
               <Text
                 style={tw`text-center text-2xl font-semibold text-black`}
@@ -79,10 +80,10 @@ const StudentHome = ({ navigation }) => {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight
-              style={tw`rounded-lg w-6/12 bg-[#0FCFEC] font-bold p-2 h-[100px] flex-row items-center justify-center`}
+              style={tw`rounded-lg w-6/12 bg-[#dddeee] font-bold p-2 h-[100px] flex-row items-center justify-center`}
             >
               <Text
-                style={tw`text-center text-2xl font-semibold text-white`}
+                style={tw`text-center text-2xl font-semibold`}
                 onPress={() => navigate('Others')}
               >
                 Others

@@ -1,47 +1,24 @@
-import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useForm } from 'react-hook-form';
-import { SafeAreaView, Text, TouchableHighlight, View } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Controller, useForm } from 'react-hook-form';
+import {
+  SafeAreaView,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  View,
+} from 'react-native';
+import Toast from 'react-native-toast-message';
 import tw from 'twrnc';
 import auth from '../../firebase.init';
+import useStudentInfoFetch from '../Hooks/useStudentInfoFetch';
 
-const DeptClearanceSelection = () => {
+const DeptClearanceSelection = ({ navigation }) => {
   const [user] = useAuthState(auth);
   const { navigate } = navigation;
-  const [deptOpen, setDeptOpen] = useState(false);
-  const [deptValue, setDeptValue] = useState(null);
-  const [studentInfo, setStudentInfo] = useState({});
-  const [info, setInfo] = useState();
+  const [info, setInfo] = useStudentInfoFetch(user.email);
 
-  const [facultyOpen, setFacultyOpen] = useState(false);
-  const [facultyValue, setFacultyValue] = useState(null);
-  const [faculty, setFaculty] = useState([
-    { label: 'Electrical & Computer Engineering', value: 'electrical' },
-    { label: 'Civil Engineering', value: 'civil' },
-    { label: 'Mechanical Engineering', value: 'mechanical' },
-  ]);
-  const [ECEDept, setECEDept] = useState([
-    { label: 'CSE', value: 'cse' },
-    { label: 'EEE', value: 'eee' },
-    { label: 'ETE', value: 'ete' },
-    { label: 'ECE', value: 'ece' },
-  ]);
-  const [CEDept, setCEDept] = useState([
-    { label: 'CE', value: 'ce' },
-    { label: 'Arch', value: 'arch' },
-    { label: 'URP', value: 'urp' },
-    { label: 'BECM', value: 'becm' },
-  ]);
-  const [MEDept, setMEDept] = useState([
-    { label: 'ME', value: 'me' },
-    { label: 'GCE', value: 'gce' },
-    { label: 'MTE', value: 'mte' },
-    { label: 'MSE', value: 'mse' },
-    { label: 'IPE', value: 'ipe' },
-    { label: 'CFPE', value: 'cfpe' },
-  ]);
-
+  console.log(info);
   const {
     control,
     handleSubmit,
@@ -49,33 +26,40 @@ const DeptClearanceSelection = () => {
     reset,
   } = useForm({
     defaultValues: {
-      full_name: '',
-      roll: '',
-      series: '',
-      contact_number: '',
+      due: 0,
+      trx_id: '',
     },
   });
 
   const onSubmit = (data) => {
     console.log(data);
-    console.log(facultyValue);
-    console.log(deptValue);
-
-    setStudentInfo({
-      ...data,
-      faculty: facultyValue,
-      dept: deptValue,
-      email: user.email,
-    });
-  };
-
-  useEffect(() => {
-    if (user) {
-      fetch(`http://localhost:5000/studentDetails?email=${user.email}`)
-        .then((res) => res.json())
-        .then((data) => setStudentInfo(data));
+    if (data.due > 0 && data.trx_id === '') {
+      Toast.show({
+        type: 'error',
+        text1: 'Provide Transaction ID',
+        text2: `You Have due and should be clear due before getting clearance.`,
+      });
+    } else {
+      axios
+        .post('http://localhost:5000/dept-clearance-application', {
+          ...info,
+          ...data,
+          dept_req: 'all',
+          dept_get_clearance: 0,
+        })
+        .then((res) => {
+          if (res.data.acknowledged === true) {
+            reset();
+            Toast.show({
+              type: 'success',
+              text1: 'Applied Successfully',
+              text2: 'Congratulations 👋',
+            });
+            navigate('Student Home');
+          }
+        });
     }
-  }, [user]);
+  };
 
   return (
     <SafeAreaView>
@@ -86,105 +70,117 @@ const DeptClearanceSelection = () => {
           >
             Departmental clearance form
           </Text>
-          <Text style={tw`text-gray-500 mb-3 px-2`}>
-            The application is directly sent to the department head from which
-            you want to get clearance.
+          <Text style={tw`text-gray-500 text-center mb-3 px-2`}>
+            The application is directly sent to the department head.
           </Text>
 
-          <View>
+          <View style={tw`ml-1 w-full`}>
             <Text
-              style={[
-                tw`font-semibold text-green-600 ml-1 mb-1 text-center`,
-                { fontSize: 18 },
-              ]}
+              style={tw`font-semibold text-green-600 mb-1 text-xl text-center`}
             >
               Your Info
             </Text>
-            <View>
-              <Text
-                style={[
-                  tw`font-semibold text-purple-600 ml-1 mb-1`,
-                  { fontSize: 18 },
-                ]}
-              >
-                Name
-              </Text>
-              <Text>{info?.full_name}</Text>
+            <View style={tw`flex-row items-center w-full`}>
+              <View style={tw`w-1/2 mr-1`}>
+                <Text
+                  style={[
+                    tw`font-semibold text-purple-600 mb-1`,
+                    { fontSize: 18 },
+                  ]}
+                >
+                  Your Name
+                </Text>
+                <Text style={tw`bg-gray-300 text-red-500 px-2 py-2 rounded-lg`}>
+                  {info?.full_name}
+                </Text>
+              </View>
+
+              <View style={tw`w-1/2`}>
+                <Text
+                  style={[
+                    tw`font-semibold text-purple-600 mb-1`,
+                    { fontSize: 18 },
+                  ]}
+                >
+                  Your Email
+                </Text>
+                <Text style={tw`bg-gray-300 text-red-500 px-2 py-2 rounded-lg`}>
+                  {info?.email}
+                </Text>
+              </View>
             </View>
           </View>
 
-          <View style={[tw`mb-3 z-50`]}>
+          <View style={tw`mt-3`}>
             <Text
               style={[
                 tw`font-semibold text-purple-600 ml-1 mb-1`,
                 { fontSize: 18 },
               ]}
             >
-              Select the Faculty
+              Total Dues
             </Text>
-            <DropDownPicker
-              open={facultyOpen}
-              value={facultyValue}
-              items={faculty}
-              setValue={setFacultyValue}
-              setItems={setFaculty}
-              setOpen={setFacultyOpen}
-              style={[tw`bg-gray-200 w-full px-4 py-3 border-0`]}
-              containerStyle={[tw`border-0 bg-gray-200 rounded-lg`]}
-              dropDownContainerStyle={[
-                tw``,
-                {
-                  backgroundColor: '#E5E7EB',
-                  borderRadius: 10,
-                  zIndex: 1,
-                  borderWidth: 0,
+            <Controller
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: 'Dues required',
                 },
-              ]}
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={tw`rounded-lg bg-gray-200 w-full px-4 py-3 focus:offset-none`}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="If not applicable enter '0'"
+                  keyboardType="numeric"
+                />
+              )}
+              name="due"
             />
+            {errors.due && (
+              <Text style={tw`text-sm font-bold text-red-600`}>
+                {errors.due?.message}
+              </Text>
+            )}
           </View>
 
-          <View style={[tw`mb-3 z-40`]}>
+          <View style={tw`mt-3`}>
             <Text
               style={[
                 tw`font-semibold text-purple-600 ml-1 mb-1`,
                 { fontSize: 18 },
               ]}
             >
-              Choose the Department for clearance
+              Transaction ID
             </Text>
-            <DropDownPicker
-              open={deptOpen}
-              value={deptValue}
-              items={
-                facultyValue === 'electrical'
-                  ? ECEDept
-                  : facultyValue === 'civil'
-                  ? CEDept
-                  : MEDept
-              }
-              setValue={setDeptValue}
-              setItems={
-                facultyValue === 'electrical'
-                  ? setECEDept
-                  : facultyValue === 'civil'
-                  ? setCEDept
-                  : setMEDept
-              }
-              setOpen={setDeptOpen}
-              style={[tw`bg-gray-200 w-full px-4 py-3 border-0`]}
-              containerStyle={[tw`border-0 bg-gray-200 rounded-lg`]}
-              dropDownContainerStyle={[
-                tw``,
-                {
-                  backgroundColor: '#E5E7EB',
-                  borderRadius: 10,
-                  zIndex: 1,
-                  borderWidth: 0,
-                },
-              ]}
+            <Controller
+              control={control}
+              rules={{}}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={tw`rounded-lg bg-gray-200 w-full px-4 py-3 focus:offset-none`}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Not applicable if dues is '0'"
+                  keyboardType="text"
+                />
+              )}
+              name="trx_id"
             />
           </View>
-
+          <Text style={tw`text-[4] ml-1 mt-2`}>
+            Want to pay dues?{' '}
+            <Text
+              style={tw`text-blue-600 underline`}
+              onPress={() => navigate('Register')}
+            >
+              Pay Now
+            </Text>
+          </Text>
           <TouchableHighlight
             style={tw`rounded-lg bg-slate-700 font-bold py-2 px-4 my-3`}
           >

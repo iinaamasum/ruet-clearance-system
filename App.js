@@ -5,7 +5,7 @@ import ResetPassword from './Pages/Auth/ResetPassword';
 import StudentLogin from './Pages/Auth/StudentLogin';
 import StudentRegister from './Pages/Auth/StudentRegister';
 import StudentUpdateProfile from './Pages/Dashboard/StudentUpdateProfile';
-import AccountsClearace from './Pages/Home/AccountsClearace';
+import AccountsClearance from './Pages/Home/AccountsClearance';
 import DeptClearanceSelection from './Pages/Home/DeptClearanceSelection';
 import HallClearanceSelection from './Pages/Home/HallClearanceSelection';
 import OtherClearance from './Pages/Home/OtherClearance';
@@ -31,7 +31,7 @@ export default function App() {
         />
         <Stack.Screen
           name="Accounts and Admin Clearance"
-          component={AccountsClearace}
+          component={AccountsClearance}
         />
         <Stack.Screen name="Others" component={OtherClearance} />
       </Stack.Navigator>
