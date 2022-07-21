@@ -1,4 +1,6 @@
+import axios from 'axios';
 import { signOut } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Image, Text, TouchableHighlight, View } from 'react-native';
 import tw from 'twrnc';
@@ -11,9 +13,21 @@ const StudentHome = ({ navigation }) => {
   const [info] = useStudentInfoFetch(user.email);
   if (!user) return <LoadingComponent />;
   const { navigate } = navigation;
+  const [deptCData, setDeptCData] = useState({});
+  const [hallCData, setHallCData] = useState({});
+  const [adminCData, setAdminCData] = useState({});
+  const [othersCData, setOthersCData] = useState({});
 
-  // console.log(user.email);
-  // console.log(info);
+  useEffect(() => {
+    if (user.email) {
+      axios
+        .get(
+          `http://localhost:5000/dept-clearance-application?email=${user.email}`
+        )
+        .then((res) => setDeptCData(res.data));
+    }
+  }, [navigate, user]);
+  console.log(deptCData);
 
   const handleLogOut = () => {
     signOut(auth);
@@ -49,20 +63,28 @@ const StudentHome = ({ navigation }) => {
               style={tw`rounded-lg w-6/12 bg-[#dddeee] font-bold p-2 h-[100px] flex-row items-center justify-center mr-2`}
             >
               <Text
-                style={tw`text-center text-2xl font-semibold text-slate-700`}
-                onPress={() => navigate('Dept Clearance')}
+                style={tw`text-xl font-semibold`}
+                onPress={() => {
+                  if (!deptCData?.full_name) navigate('Dept Clearance');
+                }}
               >
-                Dept Clearance
+                {deptCData?.full_name
+                  ? 'Already Applied for Dept Clearance'
+                  : 'Dept Clearance'}
               </Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={tw`rounded-lg w-6/12 bg-[#dddeee] font-bold p-2 h-[100px] flex-row items-center justify-center`}
             >
               <Text
-                style={tw`text-center text-2xl font-semibold`}
-                onPress={() => navigate('Hall Clearance')}
+                style={tw`text-xl font-semibold`}
+                onPress={() => {
+                  if (!hallCData?.full_name) navigate('Hall Clearance');
+                }}
               >
-                Hall Clearance
+                {hallCData?.full_name
+                  ? 'Already Applied for Hall Clearance'
+                  : 'Hall Clearance'}
               </Text>
             </TouchableHighlight>
           </View>
@@ -73,20 +95,29 @@ const StudentHome = ({ navigation }) => {
               style={tw`rounded-lg w-6/12 bg-[#dddeee] font-bold p-2 h-[100px] flex-row items-center justify-center mr-2`}
             >
               <Text
-                style={tw`text-center text-2xl font-semibold text-black`}
-                onPress={() => navigate('Accounts and Admin Clearance')}
+                style={tw`text-xl font-semibold`}
+                onPress={() => {
+                  if (!adminCData?.full_name)
+                    navigate('Accounts and Admin Clearance');
+                }}
               >
-                Accounts and Admin Clearance
+                {adminCData?.full_name
+                  ? 'Already Applied for Accounts and Admin Clearance'
+                  : 'Accounts and Admin Clearance'}
               </Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={tw`rounded-lg w-6/12 bg-[#dddeee] font-bold p-2 h-[100px] flex-row items-center justify-center`}
             >
               <Text
-                style={tw`text-center text-2xl font-semibold`}
-                onPress={() => navigate('Others')}
+                style={tw`text-xl font-semibold`}
+                onPress={() => {
+                  if (!othersCData?.full_name) navigate('Others');
+                }}
               >
-                Others
+                {othersCData?.full_name
+                  ? 'Already Applied for Others'
+                  : 'Others'}
               </Text>
             </TouchableHighlight>
           </View>
