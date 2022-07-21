@@ -40,12 +40,20 @@ const DeptClearanceSelection = ({ navigation }) => {
         text2: `You Have due and should be clear due before getting clearance.`,
       });
     } else {
+      const { full_name, email, dept, roll, series, contact_number, faculty } =
+        info;
       axios
         .post('http://localhost:5000/dept-clearance-application', {
-          ...info,
           ...data,
           dept_req: 'all',
           dept_get_clearance: 0,
+          full_name,
+          email,
+          dept,
+          roll,
+          series,
+          contact_number,
+          faculty,
         })
         .then((res) => {
           if (res.data.acknowledged === true) {

@@ -40,9 +40,17 @@ const AccountsClearance = ({ navigation }) => {
         text2: `You Have due and should be clear due before getting clearance.`,
       });
     } else {
+      const { full_name, email, dept, roll, series, contact_number, faculty } =
+        info;
       axios
         .post('http://localhost:5000/admin-clearance-application', {
-          ...info,
+          full_name,
+          email,
+          dept,
+          roll,
+          series,
+          contact_number,
+          faculty,
           ...data,
           admin_req: 'all',
           admin_get_clearance: 0,

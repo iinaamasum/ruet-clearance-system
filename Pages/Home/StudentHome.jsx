@@ -36,24 +36,24 @@ const StudentHome = ({ navigation }) => {
         .then((res) => setHallCData(res.data));
     }
   }, [navigate, user]);
-  // useEffect(() => {
-  //   if (user.email) {
-  //     axios
-  //       .get(
-  //         `http://localhost:5000/admin-clearance-application?email=${user.email}`
-  //       )
-  //       .then((res) => setAdminCData(res.data));
-  //   }
-  // }, [navigate, user]);
-  // useEffect(() => {
-  //   if (user.email) {
-  //     axios
-  //       .get(
-  //         `http://localhost:5000/others-clearance-application?email=${user.email}`
-  //       )
-  //       .then((res) => setOthersCData(res.data));
-  //   }
-  // }, [navigate, user]);
+  useEffect(() => {
+    if (user.email) {
+      axios
+        .get(
+          `http://localhost:5000/admin-clearance-application?email=${user.email}`
+        )
+        .then((res) => setAdminCData(res.data));
+    }
+  }, [navigate, user]);
+  useEffect(() => {
+    if (user.email) {
+      axios
+        .get(
+          `http://localhost:5000/others-clearance-application?email=${user.email}`
+        )
+        .then((res) => setOthersCData(res.data));
+    }
+  }, [navigate, user]);
 
   const handleLogOut = () => {
     signOut(auth);
@@ -142,8 +142,8 @@ const StudentHome = ({ navigation }) => {
                 }}
               >
                 {othersCData?.full_name
-                  ? 'Already Applied for Others'
-                  : 'Others'}
+                  ? 'Already Applied for Others Section'
+                  : 'Others Section'}
               </Text>
             </TouchableHighlight>
           </View>
