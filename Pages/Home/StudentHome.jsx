@@ -12,7 +12,7 @@ const StudentHome = ({ navigation }) => {
   if (!user) return <LoadingComponent />;
   const { navigate } = navigation;
 
-  console.log(user.email);
+  // console.log(user.email);
   // console.log(info);
 
   const handleLogOut = () => {

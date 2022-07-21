@@ -82,6 +82,10 @@ const StudentUpdateProfile = ({ navigation }) => {
     }
   }, [info]);
 
+  fetch(`http://localhost:5000/studentDetails?email=${user.email}`)
+    .then((res) => res.json())
+    .then((data) => setInfo(data));
+
   useEffect(() => {
     if (studentInfo?.full_name?.length > 0) {
       fetch('http://localhost:5000/studentDetails', {
